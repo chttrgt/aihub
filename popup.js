@@ -11,7 +11,9 @@ function showAlert(message, duration = 3000) {
 }
 
 function updateListCount(count) {
-  document.querySelector(".list-count").textContent = count || 0;
+  const listCount = document.querySelector(".list-count");
+  listCount.textContent = count || 0;
+  listCount.style.display = count > 0 ? "flex" : "none";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -343,6 +345,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cancelButton.addEventListener("click", () => {
     modal.classList.remove("show");
+    modal.dataset.mode = "add";
+    modal.querySelector("h2").textContent = "Add New Tool";
+    modal.querySelector(".submit-btn").textContent = "Add Tool";
     addToolForm.reset();
   });
 
@@ -352,31 +357,136 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = document.getElementById("toolName").value;
     const url = document.getElementById("toolUrl").value;
     const iconFile = document.getElementById("toolIcon").files[0];
+    const modal = document.getElementById("addToolModal");
+    const isEditMode = modal.dataset.mode === "edit";
 
     try {
-      const base64Icon = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(iconFile);
-      });
+      let icon;
+      if (iconFile) {
+        // If new icon is uploaded, use it
+        icon = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(iconFile);
+        });
+      } else if (isEditMode) {
+        // In edit mode, if no new icon, keep existing one
+        icon = modal.dataset.currentIcon;
+      }
 
-      const newTool = { name, url, icon: base64Icon };
+      const newTool = { name, url, icon };
 
       // Save to storage
       chrome.storage.local.get(["tools"], function (result) {
         const tools = result.tools || [];
-        tools.push(newTool);
+
+        if (isEditMode) {
+          // Update existing tool
+          const originalName = modal.dataset.originalName;
+          const toolIndex = tools.findIndex((t) => t.name === originalName);
+          if (toolIndex !== -1) {
+            tools[toolIndex] = newTool;
+
+            // Update the button in the UI
+            const button = Array.from(
+              document.querySelectorAll(".tool-button")
+            ).find((btn) => btn.textContent.trim() === originalName);
+
+            if (button) {
+              // Recreate button content
+              button.innerHTML = `
+                    <img src="${newTool.icon}" alt="${newTool.name}" />
+                    ${newTool.name}
+                `;
+              button.setAttribute("data-url", newTool.url);
+
+              // Re-add edit and delete buttons if in edit mode
+              if (isEditMode) {
+                const editBtn = document.createElement("button");
+                editBtn.className = "edit-tool-btn";
+                editBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18 2l4 4-10 10-4 1 1-4 9-11z"/>
+                        </svg>
+                    `;
+
+                const deleteBtn = document.createElement("button");
+                deleteBtn.className = "delete-tool-btn";
+                deleteBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    `;
+
+                // Re-add click handlers
+                editBtn.addEventListener("click", (e) => {
+                  e.stopPropagation();
+                  const toolName = button.textContent.trim();
+                  const toolUrl = button.getAttribute("data-url");
+                  const toolIcon = button.querySelector("img").src;
+
+                  const modal = document.getElementById("addToolModal");
+                  const modalTitle = modal.querySelector("h2");
+                  const submitBtn = modal.querySelector(".submit-btn");
+
+                  modal.dataset.mode = "edit";
+                  modal.dataset.originalName = toolName;
+                  modal.dataset.currentIcon = toolIcon;
+                  modalTitle.textContent = "Edit Tool";
+                  submitBtn.textContent = "Save Changes";
+
+                  document.getElementById("toolName").value = toolName;
+                  document.getElementById("toolUrl").value = toolUrl;
+                  document.getElementById("toolIcon").required = false;
+                  modal.classList.add("show");
+                });
+
+                deleteBtn.addEventListener("click", (e) => {
+                  e.stopPropagation();
+                  const toolName = button.textContent.trim();
+                  const confirmationModal =
+                    document.getElementById("confirmationModal");
+                  const modalTitle = confirmationModal.querySelector("h3");
+                  const modalMessage = confirmationModal.querySelector("p");
+
+                  modalTitle.textContent = "Delete this tool?";
+                  modalMessage.textContent = `Are you sure you want to delete ${toolName}?`;
+
+                  confirmationModal.dataset.toolName = toolName;
+                  confirmationModal.dataset.deleteType = "single";
+                  confirmationModal.classList.add("show");
+                });
+
+                button.appendChild(editBtn);
+                button.appendChild(deleteBtn);
+              }
+            }
+          }
+        } else {
+          // Add new tool
+          tools.push(newTool);
+          createToolButton(newTool);
+        }
+
         chrome.storage.local.set({ tools }, function () {
           updateListCount(tools.length);
           hideEmptyState();
-          createToolButton(newTool);
           toggleAddButton(true);
           toggleClearButton(true);
 
           // Reset form and hide modal
           addToolForm.reset();
           modal.classList.remove("show");
-          showAlert(`${name} has been successfully added! 🚀`);
+          modal.dataset.mode = "add";
+          modal.querySelector("h2").textContent = "Add New Tool";
+          modal.querySelector(".submit-btn").textContent = "Add Tool";
+          showAlert(
+            isEditMode
+              ? `${name} has been successfully updated!`
+              : `${name} has been successfully added!`
+          );
         });
       });
     } catch (error) {
@@ -441,13 +551,13 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleSearchBox(false);
             toggleAddButton(false);
             toggleClearButton(false);
-            showAlert(`${toolName} has been removed! 🗑️`);
+            showAlert(`${toolName} has been removed!`);
           });
         } else {
           chrome.storage.local.set({ tools: updatedTools }, function () {
             updateListCount(updatedTools.length);
             removeToolButton(buttonToRemove);
-            showAlert(`${toolName} has been removed! 🗑️`);
+            showAlert(`${toolName} has been removed!`);
           });
         }
       });
@@ -475,7 +585,7 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleSearchBox(false);
         toggleAddButton(false);
         toggleClearButton(false);
-        showAlert("All tools have been successfully deleted! 🗑️");
+        showAlert("All tools have been successfully deleted!");
       });
     }
 
@@ -617,8 +727,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Show add modal with pre-filled data
             const modal = document.getElementById("addToolModal");
+            const modalTitle = modal.querySelector("h2");
+            const submitBtn = modal.querySelector(".submit-btn");
+
+            // Set modal to edit mode
+            modal.dataset.mode = "edit";
+            modal.dataset.originalName = toolName;
+            modal.dataset.currentIcon = toolIcon; // Store current icon
+            modalTitle.textContent = "Edit Tool";
+            submitBtn.textContent = "Save Changes";
+
+            // Pre-fill form
             document.getElementById("toolName").value = toolName;
             document.getElementById("toolUrl").value = toolUrl;
+            // Make icon field optional
+            document.getElementById("toolIcon").required = false;
             modal.classList.add("show");
           });
 
