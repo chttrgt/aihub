@@ -577,17 +577,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const addButton = document.getElementById("addButton");
     const clearStorageBtn = document.getElementById("clearStorage");
 
-    // Toggle add and clear buttons disabled state
     addButton.classList.toggle("disabled", enabled);
     clearStorageBtn.classList.toggle("disabled", enabled);
 
     toolButtons.forEach((button) => {
-      // Toggle draggable attribute based on edit mode
       button.setAttribute("draggable", enabled);
       if (enabled) {
         button.classList.add("edit-mode");
-        // Add delete button if it doesn't exist
         if (!button.querySelector(".delete-tool-btn")) {
+          // Create delete button
           const deleteBtn = document.createElement("button");
           deleteBtn.className = "delete-tool-btn";
           deleteBtn.innerHTML = `
@@ -596,9 +594,35 @@ document.addEventListener("DOMContentLoaded", () => {
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           `;
+
+          // Create edit button
+          const editBtn = document.createElement("button");
+          editBtn.className = "edit-tool-btn";
+          editBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18 2l4 4-10 10-4 1 1-4 9-11z"/>
+            </svg>
+          `;
+
+          button.appendChild(editBtn);
           button.appendChild(deleteBtn);
 
-          // Add click handler for delete button
+          // Add click handler for edit button
+          editBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const toolName = button.textContent.trim();
+            const toolUrl = button.getAttribute("data-url");
+            const toolIcon = button.querySelector("img").src;
+
+            // Show add modal with pre-filled data
+            const modal = document.getElementById("addToolModal");
+            document.getElementById("toolName").value = toolName;
+            document.getElementById("toolUrl").value = toolUrl;
+            modal.classList.add("show");
+          });
+
+          // Existing delete button click handler
           deleteBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             const toolName = button.textContent.trim();
@@ -618,11 +642,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } else {
         button.classList.remove("edit-mode");
-        // Remove delete button
         const deleteBtn = button.querySelector(".delete-tool-btn");
-        if (deleteBtn) {
-          deleteBtn.remove();
-        }
+        const editBtn = button.querySelector(".edit-tool-btn");
+        if (deleteBtn) deleteBtn.remove();
+        if (editBtn) editBtn.remove();
       }
     });
 

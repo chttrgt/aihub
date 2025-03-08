@@ -755,6 +755,38 @@ body {
   box-shadow: 0 4px 12px rgba(255, 41, 41, 0.4);
 }
 
+.edit-tool-btn {
+  position: absolute;
+  top: -11px;
+  right: 15px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #2979ff, #1565c0);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.edit-tool-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: white;
+  stroke-width: 3;
+}
+
+.edit-tool-btn:hover {
+  background: linear-gradient(145deg, #2196f3, #1976d2);
+  transform: scale(0.9) !important;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
 .list-count {
   width: 24px;
   height: 24px;
