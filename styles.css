@@ -159,6 +159,46 @@ body {
   transition: transform 0.2s ease;
 }
 
+.tool-button.edit-mode {
+  animation: vibrateLeftRight 0.3s infinite;
+  cursor: pointer;
+}
+
+.tool-button.edit-mode:hover {
+  animation: none;
+  transform: translateY(-2px);
+  background: linear-gradient(145deg, #2a2a3a, #3a3a4a);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 0 15px rgba(66, 135, 245, 0.3);
+}
+
+.tool-button.edit-mode .delete-tool-btn {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 10;
+}
+
+.tool-button.edit-mode {
+  animation: vibrateLeftRight 0.3s infinite;
+  cursor: move; /* Change cursor to indicate movability */
+}
+
+.tool-button.edit-mode:hover {
+  animation: none;
+  pointer-events: all; /* Ensure hover effects work */
+}
+
+/* Remove pointer-events: none from this class since it's preventing clicks during edit mode */
+.tool-button.edit-mode {
+  animation: vibrateLeftRight 0.3s infinite;
+}
+
+.tool-button.edit-mode .delete-tool-btn {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+  z-index: 2; /* Ensure delete button stays clickable */
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -209,6 +249,12 @@ body {
 .add-button:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 15px rgba(41, 121, 255, 0.4);
+}
+
+.add-button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 /* Modal */
@@ -579,6 +625,12 @@ body {
   display: flex;
 }
 
+.clear-storage-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .clear-storage-btn svg {
   width: 18px;
   height: 18px;
@@ -675,8 +727,8 @@ body {
   position: absolute;
   top: -8px;
   right: -8px;
-  width: 22px;
-  height: 22px;
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
   background: linear-gradient(145deg, #ff2929, #c01515);
   border: none;
@@ -684,7 +736,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
   transform: scale(0.8);
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -696,11 +747,6 @@ body {
   height: 12px;
   stroke: white;
   stroke-width: 3;
-}
-
-.tool-button:hover .delete-tool-btn {
-  opacity: 1;
-  transform: scale(1);
 }
 
 .delete-tool-btn:hover {
@@ -726,6 +772,7 @@ body {
   justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   font-weight: 500;
+  user-select: none;
 }
 
 .creator-credit {
@@ -756,4 +803,75 @@ body {
 .creator-credit:hover {
   opacity: 0.8;
   color: rgba(255, 255, 255, 0.5);
+}
+
+.edit-button {
+  position: fixed;
+  bottom: 20px;
+  right: 70px;
+  width: 40px;
+  height: 40px;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #ff9800, #f57c00);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.edit-button.visible {
+  display: flex;
+}
+
+.edit-button svg {
+  width: 20px;
+  height: 20px;
+  stroke: white;
+}
+
+.edit-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(255, 152, 0, 0.4);
+}
+
+.edit-button.active {
+  background: linear-gradient(145deg, #f57c00, #ef6c00);
+  transform: scale(0.95);
+}
+
+@keyframes vibrateLeftRight {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px) rotate(-1deg);
+  }
+  75% {
+    transform: translateX(2px) rotate(1deg);
+  }
+}
+
+.tool-button.edit-mode {
+  animation: vibrateLeftRight 0.3s infinite;
+}
+
+.tool-button.edit-mode:hover {
+  animation: none;
+}
+
+.tool-button.edit-mode .delete-tool-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.add-button.disabled,
+.clear-storage-btn.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
 }
