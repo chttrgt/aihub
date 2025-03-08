@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI TOOLS</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="inputDiv">
+      <input type="text" id="search" placeholder="Search for tools" />
+      <button id="clearSearch">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="container">
+      <div id="emptyState" class="empty-state">
+        <div class="empty-state-content">
+          <button class="empty-state-icon-button" aria-label="Add new tool">
+            <svg class="empty-state-icon" viewBox="0 0 24 24">
+              <defs>
+                <linearGradient
+                  id="emptyStateGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" style="stop-color: #2979ff" />
+                  <stop offset="100%" style="stop-color: #1565c0" />
+                </linearGradient>
+              </defs>
+              <path
+                class="empty-state-path"
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"
+              />
+            </svg>
+          </button>
+          <h3>Your Toolbox is Empty</h3>
+          <p>Click the + button to add your first tool</p>
+        </div>
+      </div>
+    </div>
+    <button id="clearStorage" class="clear-storage-btn">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"
+        />
+      </svg>
+    </button>
+
+    <button id="addButton" class="add-button">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+    </button>
+    <span class="list-count">99</span>
+    <div id="addToolModal" class="modal">
+      <div class="modal-content">
+        <h2>Add New Tool</h2>
+        <form id="addToolForm">
+          <div class="form-group">
+            <label for="toolName">Tool Name</label>
+            <input type="text" id="toolName" required />
+          </div>
+          <div class="form-group">
+            <label for="toolUrl">URL</label>
+            <input type="url" id="toolUrl" required />
+          </div>
+          <div class="form-group">
+            <label for="toolIcon">Icon Image</label>
+            <input type="file" id="toolIcon" accept="image/*" required />
+            <small class="file-hint"
+              >Recommended: Square image (e.g., 128x128px)</small
+            >
+          </div>
+          <div class="form-buttons">
+            <button type="button" id="cancelAdd" class="cancel-btn">
+              Cancel
+            </button>
+            <button type="submit" class="submit-btn">Add Tool</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="alertBox" class="alert-box">
+      <div class="alert-content">
+        <svg class="alert-icon" viewBox="0 0 24 24">
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z"
+          />
+        </svg>
+        <span class="alert-message"></span>
+      </div>
+    </div>
+    <div id="confirmationModal" class="confirmation-modal">
+      <div class="confirmation-content">
+        <h3>Delete All Tools?</h3>
+        <p>
+          Do you want to continue this process? All tools will be permanently
+          deleted.
+        </p>
+        <div class="confirmation-buttons">
+          <button id="cancelClear" class="cancel-confirm-btn">Cancel</button>
+          <button id="confirmClear" class="confirm-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
