@@ -16,6 +16,43 @@ function updateListCount(count) {
   listCount.style.display = count > 0 ? "flex" : "none";
 }
 
+// Security helper functions
+function sanitizeInput(str) {
+  return String(str).replace(/[&<>"'/]/g, function (match) {
+    const chars = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+      "/": "&#x2F;",
+    };
+    return chars[match];
+  });
+}
+
+function isValidUrl(url) {
+  try {
+    const parsedUrl = new URL(url);
+    return ["http:", "https:"].includes(parsedUrl.protocol);
+  } catch {
+    return false;
+  }
+}
+
+function validateFileUpload(file) {
+  const maxSize = 500 * 1024; // 500KB
+  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+
+  if (file.size > maxSize) {
+    throw new Error("File size must be less than 500KB");
+  }
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error("Only JPEG, PNG and GIF images are allowed");
+  }
+  return true;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".container");
   const emptyState = document.getElementById("emptyState");
@@ -82,8 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Main button content
     newButton.innerHTML = `
-      <img src="${tool.icon}" alt="${tool.name}" />
-      ${tool.name}
+      <img src="${encodeURI(tool.icon)}" alt="${sanitizeInput(tool.name)}" />
+      ${sanitizeInput(tool.name)}
     `;
 
     // Add delete button to tool button only if in edit mode
@@ -115,7 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const modalMessage = confirmationModal.querySelector("p");
 
       modalTitle.textContent = "Delete this tool?";
-      modalMessage.textContent = `Are you sure you want to delete ${tool.name}?`;
+      modalMessage.textContent = `Are you sure you want to delete ${sanitizeInput(
+        tool.name
+      )}?`;
 
       // Store the tool data in the modal for reference
       confirmationModal.dataset.toolName = tool.name;
@@ -354,13 +393,21 @@ document.addEventListener("DOMContentLoaded", () => {
   addToolForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById("toolName").value;
+    const name = sanitizeInput(document.getElementById("toolName").value);
     const url = document.getElementById("toolUrl").value;
     const iconFile = document.getElementById("toolIcon").files[0];
     const modal = document.getElementById("addToolModal");
     const isEditMode = modal.dataset.mode === "edit";
 
     try {
+      if (!isValidUrl(url)) {
+        throw new Error("Please enter a valid URL");
+      }
+
+      if (iconFile && !validateFileUpload(iconFile)) {
+        throw new Error("Invalid file");
+      }
+
       let icon;
       if (iconFile) {
         // If new icon is uploaded, use it
@@ -395,8 +442,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (button) {
               // Recreate button content
               button.innerHTML = `
-                    <img src="${newTool.icon}" alt="${newTool.name}" />
-                    ${newTool.name}
+                    <img src="${newTool.icon}" alt="${sanitizeInput(
+                newTool.name
+              )}" />
+                    ${sanitizeInput(newTool.name)}
                 `;
               button.setAttribute("data-url", newTool.url);
 
@@ -452,7 +501,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   const modalMessage = confirmationModal.querySelector("p");
 
                   modalTitle.textContent = "Delete this tool?";
-                  modalMessage.textContent = `Are you sure you want to delete ${toolName}?`;
+                  modalMessage.textContent = `Are you sure you want to delete ${sanitizeInput(
+                    toolName
+                  )}?`;
 
                   confirmationModal.dataset.toolName = toolName;
                   confirmationModal.dataset.deleteType = "single";
@@ -490,7 +541,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
     } catch (error) {
-      showAlert("Oops! Something went wrong. Please try again. 😕");
+      showAlert(error.message);
+      return;
     }
   });
 
@@ -757,7 +809,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const modalMessage = confirmationModal.querySelector("p");
 
             modalTitle.textContent = "Delete this tool?";
-            modalMessage.textContent = `Are you sure you want to delete ${toolName}?`;
+            modalMessage.textContent = `Are you sure you want to delete ${sanitizeInput(
+              toolName
+            )}?`;
 
             confirmationModal.dataset.toolName = toolName;
             confirmationModal.dataset.deleteType = "single";
