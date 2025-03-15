@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "AI HUB",
   "version": "1.0",
-  "description": "Tek tıkla AI araçlarına ulaş!",
+  "description": "Access your favorite AI tools with just one click!",
   "icons": {
     "16": "assets/icons/icon16.png",
     "48": "assets/icons/icon48.png",
