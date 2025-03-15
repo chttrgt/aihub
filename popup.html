@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- Search for tools -->
     <div class="inputDiv">
       <input type="text" id="search" placeholder="Search for tools" />
       <button id="clearSearch">
@@ -28,6 +29,8 @@
         </svg>
       </button>
     </div>
+
+    <!-- Tools Container -->
     <div class="container">
       <div id="emptyState" class="empty-state">
         <div class="empty-state-content">
@@ -56,211 +59,238 @@
         </div>
       </div>
     </div>
-    <button
-      id="clearStorage"
-      class="clear-storage-btn"
-      title="Delete all tools"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"
-        />
-      </svg>
-    </button>
 
-    <div class="creator-credit">Coded by Cihat Turgut using Cursor AI</div>
+    <!-- Tools Footer -->
+    <div class="footer">
+      <!-- Clear Storage (Delete All Tools) -->
+      <button
+        id="clearStorage"
+        class="clear-storage-btn"
+        title="Delete all tools"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          width="35"
+          height="35"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 6h18" />
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+          <path d="M10 11v6" />
+          <path d="M14 11v6" />
+          <path d="M5 6h14l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6z" />
+        </svg>
+      </button>
 
-    <button id="addButton" class="add-button" title="Add new tool">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <line x1="12" y1="5" x2="12" y2="19"></line>
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-      </svg>
-    </button>
-    <button id="editButton" class="edit-button" title="Edit tools">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <path
-          d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"
-        ></path>
-        <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
-      </svg>
-    </button>
-    <span class="list-count">99</span>
-    <div id="addToolModal" class="modal">
-      <div class="modal-content">
-        <h2>Add New Tool</h2>
-        <form id="addToolForm">
-          <div class="form-group">
-            <label for="toolName">Tool Name</label>
-            <input type="text" id="toolName" required />
-          </div>
-          <div class="form-group">
-            <label for="toolUrl">URL</label>
-            <input type="url" id="toolUrl" required />
-          </div>
-          <div class="form-group">
-            <label for="toolIcon">Icon Image</label>
-            <input type="file" id="toolIcon" accept="image/*" required />
-            <small class="file-hint"
-              >Recommended: Square image (e.g., 128x128px)</small
-            >
-          </div>
-          <div class="form-buttons">
-            <button type="button" id="cancelAdd" class="cancel-btn">
-              Cancel
-            </button>
-            <button type="submit" class="submit-btn">Add Tool</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div id="alertBox" class="alert-box">
-      <div class="alert-content">
-        <svg class="alert-icon" viewBox="0 0 24 24">
+      <div class="creator-credit">Coded by Cihat Turgut using Cursor AI</div>
+
+      <!-- Add New Tool -->
+      <button id="addButton" class="add-button" title="Add new tool">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+
+      <!-- Edit Tools -->
+      <button id="editButton" class="edit-button" title="Edit tools">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path
-            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z"
+            d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"
+          ></path>
+          <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
+        </svg>
+      </button>
+
+      <!-- List Count (Show the count of tools) -->
+      <span class="list-count">99</span>
+
+      <!-- Add Tool Modal -->
+      <div id="addToolModal" class="modal">
+        <div class="modal-content">
+          <h2>Add New Tool</h2>
+          <form id="addToolForm">
+            <div class="form-group">
+              <label for="toolName">Tool Name</label>
+              <input type="text" id="toolName" required />
+            </div>
+            <div class="form-group">
+              <label for="toolUrl">URL</label>
+              <input type="url" id="toolUrl" required />
+            </div>
+            <div class="form-group">
+              <label for="toolIcon">Icon Image</label>
+              <input type="file" id="toolIcon" accept="image/*" required />
+              <small class="file-hint"
+                >Recommended: Square image (e.g., 128x128px)</small
+              >
+            </div>
+            <div class="form-buttons">
+              <button type="button" id="cancelAdd" class="cancel-btn">
+                Cancel
+              </button>
+              <button type="submit" class="submit-btn">Add Tool</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Alert Box -->
+      <div id="alertBox" class="alert-box">
+        <div class="alert-content">
+          <svg class="alert-icon" viewBox="0 0 24 24">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z"
+            />
+          </svg>
+          <span class="alert-message"></span>
+        </div>
+      </div>
+
+      <!-- Confirmation Modal -->
+      <div id="confirmationModal" class="confirmation-modal">
+        <div class="confirmation-content">
+          <h3>Delete All Tools?</h3>
+          <p>
+            Do you want to continue this process? All tools will be permanently
+            deleted.
+          </p>
+          <div class="confirmation-buttons">
+            <button id="cancelClear" class="cancel-confirm-btn">Cancel</button>
+            <button id="confirmClear" class="confirm-btn">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- About Me -->
+      <button id="aboutButton" class="about-button" title="About me">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 2.5c-5.25 0-9.5 4.25-9.5 9.5s4.25 9.5 9.5 9.5 9.5-4.25 9.5-9.5-4.25-9.5-9.5-9.5z"
+          />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4" />
+          <path d="M11.5 8a.5.5 0 1 1 1 0 .5.5 0 0 1-1 0z" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7.5 7.5c1-2 3-3 4.5-3s3.5 1 4.5 3"
+          />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M7.5 16.5c1 2 3 3 4.5 3s3.5-1 4.5-3"
           />
         </svg>
-        <span class="alert-message"></span>
-      </div>
-    </div>
-    <div id="confirmationModal" class="confirmation-modal">
-      <div class="confirmation-content">
-        <h3>Delete All Tools?</h3>
-        <p>
-          Do you want to continue this process? All tools will be permanently
-          deleted.
-        </p>
-        <div class="confirmation-buttons">
-          <button id="cancelClear" class="cancel-confirm-btn">Cancel</button>
-          <button id="confirmClear" class="confirm-btn">Delete</button>
-        </div>
-      </div>
-    </div>
-    <button id="aboutButton" class="about-button" title="About me">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M12 2.5c-5.25 0-9.5 4.25-9.5 9.5s4.25 9.5 9.5 9.5 9.5-4.25 9.5-9.5-4.25-9.5-9.5-9.5z"
-        />
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4" />
-        <path d="M11.5 8a.5.5 0 1 1 1 0 .5.5 0 0 1-1 0z" />
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M7.5 7.5c1-2 3-3 4.5-3s3.5 1 4.5 3"
-        />
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M7.5 16.5c1 2 3 3 4.5 3s3.5-1 4.5-3"
-        />
-      </svg>
-    </button>
-    <div id="aboutModal" class="about-modal">
-      <div class="about-content">
-        <button class="close-about">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-        <div class="about-header">
-          <h2>About Me</h2>
-        </div>
-        <div class="about-body">
-          <div class="about-section">
-            <h3>Full Name</h3>
-            <p>Cihat Turgut</p>
-          </div>
-          <div class="about-section">
-            <h3>Contact</h3>
-            <p>cihatturgut@yandex.com</p>
-          </div>
-          <div class="about-section">
-            <h3>YouTube Channel</h3>
-            <p>Home Lab Adventures</p>
-          </div>
-          <div class="about-support">
-            <p>
-              ☕ If you'd like to support me, you can buy me a coffee or visit
-              my YouTube channel, subscribe, and watch my short videos! 🎥💙
-              Don't forget to like and comment, it means a lot to me! 🚀✨
-            </p>
-          </div>
-          <div class="about-links">
-            <a
-              href="https://www.youtube.com/channel/UChaZPYg2j0_1LyqAldmC4sQ"
-              target="_blank"
-              class="youtube-link"
-              rel="noopener noreferrer"
+      </button>
+
+      <!-- About Modal -->
+      <div id="aboutModal" class="about-modal">
+        <div class="about-content">
+          <button class="close-about">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <div class="about-header">
+            <h2>About Me</h2>
+          </div>
+          <div class="about-body">
+            <div class="about-section">
+              <h3>Full Name</h3>
+              <p>Cihat Turgut</p>
+            </div>
+            <div class="about-section">
+              <h3>Contact</h3>
+              <p>cihatturgut@yandex.com</p>
+            </div>
+            <div class="about-section">
+              <h3>YouTube Channel</h3>
+              <p>Home Lab Adventures</p>
+            </div>
+            <div class="about-support">
+              <p>
+                ☕ If you'd like to support me, you can buy me a coffee or visit
+                my YouTube channel, subscribe, and watch my short videos! 🎥💙
+                Don't forget to like and comment, it means a lot to me! 🚀✨
+              </p>
+            </div>
+            <div class="about-links">
+              <a
+                href="https://www.youtube.com/channel/UChaZPYg2j0_1LyqAldmC4sQ"
+                target="_blank"
+                class="youtube-link"
+                rel="noopener noreferrer"
               >
-                <path
-                  d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
-                />
-              </svg>
-              VISIT Channel
-            </a>
-            <a
-              href="https://buymeacoffee.com/chttrgt"
-              target="_blank"
-              class="coffee-link"
-              rel="noopener noreferrer"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                  />
+                </svg>
+                VISIT Channel
+              </a>
+              <a
+                href="https://buymeacoffee.com/chttrgt"
+                target="_blank"
+                class="coffee-link"
+                rel="noopener noreferrer"
               >
-                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                <line x1="6" y1="1" x2="6" y2="4"></line>
-                <line x1="10" y1="1" x2="10" y2="4"></line>
-                <line x1="14" y1="1" x2="14" y2="4"></line>
-              </svg>
-              Buy me a coffee
-            </a>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                  <line x1="6" y1="1" x2="6" y2="4"></line>
+                  <line x1="10" y1="1" x2="10" y2="4"></line>
+                  <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+                Buy me a coffee
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
     <!-- Change script import to use modules -->
     <script type="module" src="popup.js"></script>
   </body>

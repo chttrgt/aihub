@@ -19,8 +19,7 @@ body {
 .inputDiv {
   width: 100vw;
   height: 60px;
-  /* background: linear-gradient(45deg, #1a1a2e, #16213e)
-  ; */
+  /* background: linear-gradient(45deg, #1a1a2e, #16213e); */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,22 +91,37 @@ body {
 }
 
 .container {
-  width: 100vw;
-  height: calc(100vh - 60px);
+  width: 100%; /* Changed from 100vw to 100% */
+  height: calc(100vh - 120px);
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 0.3fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(140px, 1fr)
+  ); /* Changed from auto-fill and adjusted minmax */
   grid-auto-rows: min-content;
-  gap: 1.2rem;
-  padding: 20px;
-  padding-bottom: 80px;
-  justify-content: center;
-  overflow: hidden;
-  transition: height 0.3s ease;
+  gap: 1rem; /* Adjusted gap to be slightly smaller */
+  padding: 1.2rem;
+  justify-content: start; /* Changed from center to start */
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  background: #0a0a0f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
 .tool-button {
-  width: 150px;
+  width: 100%; /* Changed from fixed width to 100% */
+  min-width: 140px; /* Added minimum width */
   height: 55px;
   display: flex;
   align-items: center;
@@ -220,10 +234,10 @@ body {
 /* Add Button */
 .add-button {
   position: fixed;
-  bottom: 20px;
+  bottom: 10px;
   right: 20px;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 25px;
   background: linear-gradient(145deg, #2979ff, #1565c0);
   border: none;
@@ -600,7 +614,7 @@ body {
 
 .clear-storage-btn {
   position: fixed;
-  bottom: 20px;
+  bottom: 10px;
   right: 120px;
   display: flex;
   align-items: center;
@@ -617,8 +631,8 @@ body {
   z-index: 1000;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   display: none;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   justify-content: center;
 }
 
@@ -632,11 +646,12 @@ body {
   cursor: not-allowed;
 }
 
-.clear-storage-btn svg {
-  width: 18px;
-  height: 18px;
+/* .clear-storage-btn svg {
+  width: 24px;
+  height: 24px;  /* Updated to match the width change */
   stroke: white;
-}
+  stroke-width: 1.5;
+} */
 
 .clear-storage-btn:hover {
   transform: scale(1.05);
@@ -792,8 +807,8 @@ body {
   width: 24px;
   height: 24px;
   position: absolute;
-  bottom: 50px;
-  right: 10px;
+  bottom: 33px;
+  right: 7px;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 5px;
   border-radius: 50%;
@@ -810,7 +825,7 @@ body {
 
 .creator-credit {
   position: fixed;
-  bottom: 20px;
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.75rem;
@@ -840,10 +855,10 @@ body {
 
 .edit-button {
   position: fixed;
-  bottom: 20px;
+  bottom: 10px;
   right: 70px;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 25px;
   background: linear-gradient(145deg, #ff9800, #f57c00);
   border: none;
@@ -861,8 +876,8 @@ body {
 }
 
 .edit-button svg {
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   stroke: white;
 }
 
@@ -910,11 +925,11 @@ body {
 }
 
 .about-button {
-  position: fixed;
-  bottom: 20px;
+  position: absolute; /* Corrected 'abolute' to 'absolute' */
+  bottom: 10px;
   left: 20px;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 25px;
   background: linear-gradient(145deg, #8e24aa, #7b1fa2);
   border: none;
