@@ -57,3 +57,4 @@ Eğer AIHUB'u daha iyi hale getirmek için önerilerin varsa veya bir hata ile k
 ![proje_görseli](https://github.com/chttrgt/aihub/blob/main/assets/screens/Screenshot_8.png)
 ![proje_görseli](https://github.com/chttrgt/aihub/blob/main/assets/screens/Screenshot_9.png)
 ![proje_görseli](https://github.com/chttrgt/aihub/blob/main/assets/screens/Screenshot_10.png)
+![proje_görseli](https://github.com/chttrgt/aihub/blob/main/assets/screens/Screenshot_11.png)
