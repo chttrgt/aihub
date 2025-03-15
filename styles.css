@@ -503,8 +503,9 @@ body {
 }
 
 .empty-state-icon {
-  width: 48px;
-  height: 48px;
+  background: linear-gradient(145deg, #2979ff, #1565c0);
+  width: 33px;
+  height: 33px;
   margin-bottom: 1rem;
   transform: scale(0);
   opacity: 0;

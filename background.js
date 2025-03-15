@@ -1,5 +1,7 @@
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "open_tab") {
-    chrome.tabs.create({ url: message.url });
+import { openNewTab } from "./modules/core/tabManager.js";
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "open_tab") {
+    openNewTab(request.url);
   }
 });

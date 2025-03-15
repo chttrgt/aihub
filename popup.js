@@ -1,57 +1,10 @@
-function showAlert(message, duration = 3000) {
-  const alertBox = document.getElementById("alertBox");
-  const alertMessage = alertBox.querySelector(".alert-message");
-
-  alertMessage.textContent = message;
-  alertBox.classList.add("show");
-
-  setTimeout(() => {
-    alertBox.classList.remove("show");
-  }, duration);
-}
-
-function updateListCount(count) {
-  const listCount = document.querySelector(".list-count");
-  listCount.textContent = count || 0;
-  listCount.style.display = count > 0 ? "flex" : "none";
-}
-
-// Security helper functions
-function sanitizeInput(str) {
-  return String(str).replace(/[&<>"'/]/g, function (match) {
-    const chars = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;",
-      "/": "&#x2F;",
-    };
-    return chars[match];
-  });
-}
-
-function isValidUrl(url) {
-  try {
-    const parsedUrl = new URL(url);
-    return ["http:", "https:"].includes(parsedUrl.protocol);
-  } catch {
-    return false;
-  }
-}
-
-function validateFileUpload(file) {
-  const maxSize = 500 * 1024; // 500KB
-  const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-
-  if (file.size > maxSize) {
-    throw new Error("File size must be less than 500KB");
-  }
-  if (!allowedTypes.includes(file.type)) {
-    throw new Error("Only JPEG, PNG and GIF images are allowed");
-  }
-  return true;
-}
+import {
+  sanitizeInput,
+  isValidUrl,
+  validateFileUpload,
+} from "./modules/utils/security.js";
+import { showAlert, updateListCount } from "./modules/ui/alerts.js";
+import { saveTools, loadTools, clearTools } from "./modules/core/storage.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".container");
@@ -66,10 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSavedTools();
 
   function loadSavedTools() {
-    chrome.storage.local.get(["tools"], function (result) {
-      const tools = result.tools || [];
+    loadTools().then((tools) => {
       updateListCount(tools.length);
-      if (!result.tools || tools.length === 0) {
+      if (!tools || tools.length === 0) {
         showEmptyState();
         toggleAddButton(false);
         toggleClearButton(false);
@@ -249,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    chrome.storage.local.set({ tools: newOrder });
+    saveTools(newOrder);
   }
 
   // Handle button clicks
@@ -570,24 +522,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   confirmClearBtn.addEventListener("click", () => {
-    const confirmationModal = document.getElementById("confirmationModal");
     const deleteType = confirmationModal.dataset.deleteType;
 
     if (deleteType === "single") {
       const toolName = confirmationModal.dataset.toolName;
-      // Get current tools from storage
-      chrome.storage.local.get(["tools"], function (result) {
-        const tools = result.tools || [];
-        // Filter out the clicked tool
+      loadTools().then((tools) => {
         const updatedTools = tools.filter((t) => t.name !== toolName);
-
-        // Find the button to remove
         const buttonToRemove = Array.from(
           document.querySelectorAll(".tool-button")
         ).find((btn) => btn.textContent.trim().includes(toolName));
 
         if (updatedTools.length === 0) {
-          chrome.storage.local.remove(["tools"], function () {
+          clearTools().then(() => {
             updateListCount(0);
             // Update empty state before removing the button
             const emptyState = document.getElementById("emptyState");
@@ -606,7 +552,7 @@ document.addEventListener("DOMContentLoaded", () => {
             showAlert(`${toolName} has been removed!`);
           });
         } else {
-          chrome.storage.local.set({ tools: updatedTools }, function () {
+          saveTools(updatedTools).then(() => {
             updateListCount(updatedTools.length);
             removeToolButton(buttonToRemove);
             showAlert(`${toolName} has been removed!`);
@@ -615,7 +561,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } else {
       // Clear all functionality
-      chrome.storage.local.remove(["tools"], function () {
+      clearTools().then(() => {
         updateListCount(0);
         const toolButtons = document.querySelectorAll(".tool-button");
         toolButtons.forEach((button) => button.remove());
