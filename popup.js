@@ -37,11 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleAddButton(false);
         toggleClearButton(false);
         toggleSearchBox(false);
+        toggleAboutButton(false);
       } else {
         hideEmptyState();
         toggleAddButton(true);
         toggleClearButton(true);
         toggleSearchBox(true);
+        toggleAboutButton(true);
         tools.forEach((tool) => createToolButton(tool));
       }
     });
@@ -686,9 +688,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const toolButtons = document.querySelectorAll(".tool-button");
     const addButton = document.getElementById("addButton");
     const clearStorageBtn = document.getElementById("clearStorage");
+    const aboutButton = document.getElementById("aboutButton"); // Add this line
 
     addButton.classList.toggle("disabled", enabled);
     clearStorageBtn.classList.toggle("disabled", enabled);
+    aboutButton.classList.toggle("disabled", enabled); // Add this line
 
     toolButtons.forEach((button) => {
       button.setAttribute("draggable", enabled);
@@ -777,5 +781,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   editButton.addEventListener("click", () => {
     toggleEditMode(!isEditMode);
+  });
+
+  // About button functionality
+  const aboutButton = document.getElementById("aboutButton");
+  const aboutModal = document.getElementById("aboutModal");
+  const closeAbout = document.querySelector(".close-about");
+
+  // Show About button when tools are present
+  function toggleAboutButton(show) {
+    aboutButton.classList.toggle("visible", show);
+  }
+
+  aboutButton.addEventListener("click", () => {
+    // Don't open modal if button is disabled
+    if (aboutButton.classList.contains("disabled")) return;
+    aboutModal.classList.add("show");
+  });
+
+  closeAbout.addEventListener("click", () => {
+    aboutModal.classList.remove("show");
+  });
+
+  // Close modal when clicking outside
+  aboutModal.addEventListener("click", (e) => {
+    if (e.target === aboutModal) {
+      aboutModal.classList.remove("show");
+    }
+  });
+
+  // Close modal with Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && aboutModal.classList.contains("show")) {
+      aboutModal.classList.remove("show");
+    }
   });
 });

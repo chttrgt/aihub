@@ -907,3 +907,213 @@ body {
   pointer-events: none;
   cursor: not-allowed;
 }
+
+.about-button {
+  position: fixed;
+  bottom: 20px;
+  right: 120px;
+  width: 40px;
+  height: 40px;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #8e24aa, #7b1fa2);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.about-button.visible {
+  display: flex;
+}
+
+.about-button svg {
+  width: 24px;
+  height: 24px;
+  stroke: white;
+}
+
+.about-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(142, 36, 170, 0.4);
+}
+
+.about-button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.about-button.disabled:hover {
+  transform: none !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.about-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.about-modal.show {
+  display: flex;
+  opacity: 1;
+}
+
+.about-content {
+  background: linear-gradient(145deg, #1a1a2e, #16213e);
+  padding: 1.5rem;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 90%;
+  max-width: 360px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.about-modal.show .about-content {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.about-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #8e24aa, #7b1fa2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.about-section {
+  margin-bottom: 1rem;
+}
+
+.about-section h3 {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.about-section p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.about-support {
+  margin: 1.5rem 0;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.about-support p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.about-links {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.about-links a {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  text-transform: uppercase;
+}
+
+.youtube-link {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 0, 0.8),
+    rgba(204, 0, 0, 0.9)
+  );
+  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.2);
+}
+
+.coffee-link {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 152, 0, 0.8),
+    rgba(245, 124, 0, 0.9)
+  );
+  box-shadow: 0 2px 10px rgba(255, 152, 0, 0.2);
+}
+
+.about-links a svg {
+  width: 16px;
+  height: 16px;
+}
+
+.about-links a:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.youtube-link:hover {
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+}
+
+.coffee-link:hover {
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+}
+
+.close-about {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.close-about svg {
+  width: 16px;
+  height: 16px;
+  stroke: rgba(255, 255, 255, 0.7);
+}
+
+.close-about:hover {
+  opacity: 1;
+}

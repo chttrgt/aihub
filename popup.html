@@ -52,7 +52,11 @@
         </div>
       </div>
     </div>
-    <button id="clearStorage" class="clear-storage-btn">
+    <button
+      id="clearStorage"
+      class="clear-storage-btn"
+      title="Delete all tools"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -68,7 +72,7 @@
 
     <div class="creator-credit">Coded by Cihat Turgut using Cursor AI</div>
 
-    <button id="addButton" class="add-button">
+    <button id="addButton" class="add-button" title="Add new tool">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -80,7 +84,7 @@
         <line x1="5" y1="12" x2="19" y2="12"></line>
       </svg>
     </button>
-    <button id="editButton" class="edit-button">
+    <button id="editButton" class="edit-button" title="Edit tools">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -143,6 +147,111 @@
         <div class="confirmation-buttons">
           <button id="cancelClear" class="cancel-confirm-btn">Cancel</button>
           <button id="confirmClear" class="confirm-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+    <button id="aboutButton" class="about-button" title="About me">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 2.5c-5.25 0-9.5 4.25-9.5 9.5s4.25 9.5 9.5 9.5 9.5-4.25 9.5-9.5-4.25-9.5-9.5-9.5z"
+        />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16v-4" />
+        <path d="M11.5 8a.5.5 0 1 1 1 0 .5.5 0 0 1-1 0z" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M7.5 7.5c1-2 3-3 4.5-3s3.5 1 4.5 3"
+        />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M7.5 16.5c1 2 3 3 4.5 3s3.5-1 4.5-3"
+        />
+      </svg>
+    </button>
+    <div id="aboutModal" class="about-modal">
+      <div class="about-content">
+        <button class="close-about">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="about-header">
+          <h2>About Me</h2>
+        </div>
+        <div class="about-body">
+          <div class="about-section">
+            <h3>Full Name</h3>
+            <p>Cihat Turgut</p>
+          </div>
+          <div class="about-section">
+            <h3>Contact</h3>
+            <p>cihatturgut.contact@gmail.com</p>
+          </div>
+          <div class="about-section">
+            <h3>YouTube Channel</h3>
+            <p>@cihatturgutdev</p>
+          </div>
+          <div class="about-support">
+            <p>
+              You can support me by buying a coffee or by visiting my channel,
+              subscribing, and watching my short videos. Also, don't forget to
+              like and comment on my videos!
+            </p>
+          </div>
+          <div class="about-links">
+            <a
+              href="https://youtube.com/@cihatturgutdev"
+              target="_blank"
+              class="youtube-link"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                />
+              </svg>
+              Visit Channel
+            </a>
+            <a
+              href="https://www.buymeacoffee.com/cihatturgut"
+              target="_blank"
+              class="coffee-link"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                <line x1="6" y1="1" x2="6" y2="4"></line>
+                <line x1="10" y1="1" x2="10" y2="4"></line>
+                <line x1="14" y1="1" x2="14" y2="4"></line>
+              </svg>
+              Buy me a coffee
+            </a>
+          </div>
         </div>
       </div>
     </div>
