@@ -600,7 +600,7 @@ body {
 .clear-storage-btn {
   position: fixed;
   bottom: 20px;
-  left: 20px;
+  right: 120px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -911,7 +911,7 @@ body {
 .about-button {
   position: fixed;
   bottom: 20px;
-  right: 120px;
+  left: 20px;
   width: 40px;
   height: 40px;
   border-radius: 25px;
@@ -919,15 +919,11 @@ body {
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  display: none;
+  display: flex; /* Changed from 'none' to 'flex' */
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
   z-index: 100;
-}
-
-.about-button.visible {
-  display: flex;
 }
 
 .about-button svg {

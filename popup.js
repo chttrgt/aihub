@@ -37,13 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleAddButton(false);
         toggleClearButton(false);
         toggleSearchBox(false);
-        toggleAboutButton(false);
       } else {
         hideEmptyState();
         toggleAddButton(true);
         toggleClearButton(true);
         toggleSearchBox(true);
-        toggleAboutButton(true);
         tools.forEach((tool) => createToolButton(tool));
       }
     });
@@ -787,11 +785,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const aboutButton = document.getElementById("aboutButton");
   const aboutModal = document.getElementById("aboutModal");
   const closeAbout = document.querySelector(".close-about");
-
-  // Show About button when tools are present
-  function toggleAboutButton(show) {
-    aboutButton.classList.toggle("visible", show);
-  }
 
   aboutButton.addEventListener("click", () => {
     // Don't open modal if button is disabled
