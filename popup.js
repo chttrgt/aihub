@@ -214,8 +214,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Show|Hide clear button based on input
   searchInput.addEventListener("input", (event) => {
-    const searchQuery = event.target.value.toLowerCase().trim();
-    clearButton.style.display = searchQuery ? "block" : "none";
+    const searchQuery = event.target.value;
+    const hasCategory = searchQuery.includes("@");
+
+    // Toggle category mode class
+    searchInput.classList.toggle("category-mode", hasCategory);
+
+    // Update placeholder text when in category mode
+    if (hasCategory) {
+      searchInput.placeholder = "Filtering by category...";
+    } else {
+      searchInput.placeholder = "Search for tools";
+    }
+
+    // Rest of your existing search input handler code...
+    const searchQueryLower = searchQuery.toLowerCase().trim();
+    clearButton.style.display = searchQueryLower ? "block" : "none";
 
     // First check storage state
     chrome.storage.local.get(["tools"], function (result) {
@@ -235,24 +249,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Get all current tool buttons for search
       const currentToolButtons = document.querySelectorAll(".tool-button");
+      const categoryFilter = searchQuery.match(/@(\w+)/g);
+      const textQuery = searchQuery.replace(/@\w+/g, "").trim();
 
       // Handle search visibility
       currentToolButtons.forEach((button) => {
         const buttonText = button.textContent.toLowerCase().trim();
-        const shouldShow = buttonText.includes(searchQuery);
+        const toolData = result.tools.find(
+          (t) => t.name.toLowerCase() === buttonText
+        );
 
+        let shouldShow = true;
+
+        // Check category filters if present
+        if (categoryFilter && toolData) {
+          shouldShow = categoryFilter.some((cat) => {
+            const category = cat.substring(1); // Remove @ symbol
+            return (
+              toolData.categories && toolData.categories.includes(category)
+            );
+          });
+        }
+
+        // If passing category filter, also check text query
+        if (shouldShow && textQuery) {
+          shouldShow = buttonText.includes(textQuery);
+        }
+
+        // Remove the setTimeout and simplify the visibility logic
         if (shouldShow) {
           button.style.display = "flex";
           button.style.opacity = "1";
           button.style.transform = "scale(1)";
         } else {
+          button.style.display = "none";
           button.style.opacity = "0";
           button.style.transform = "scale(0.8)";
-          setTimeout(() => {
-            if (!buttonText.includes(searchInput.value.toLowerCase().trim())) {
-              button.style.display = "none";
-            }
-          }, 300);
         }
       });
 
@@ -298,6 +330,8 @@ document.addEventListener("DOMContentLoaded", () => {
   clearButton.addEventListener("click", () => {
     searchInput.value = "";
     clearButton.style.display = "none";
+    searchInput.classList.remove("category-mode");
+    searchInput.placeholder = "Search for tools";
 
     const currentToolButtons = document.querySelectorAll(".tool-button");
 
@@ -348,6 +382,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = sanitizeInput(document.getElementById("toolName").value);
     const url = document.getElementById("toolUrl").value;
     const iconFile = document.getElementById("toolIcon").files[0];
+    const categories = document
+      .getElementById("toolCategories")
+      .value.split(",")
+      .map((cat) => cat.trim().toLowerCase())
+      .filter((cat) => cat);
     const modal = document.getElementById("addToolModal");
     const isEditMode = modal.dataset.mode === "edit";
 
@@ -373,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
         icon = modal.dataset.currentIcon;
       }
 
-      const newTool = { name, url, icon };
+      const newTool = { name, url, icon, categories };
 
       // Save to storage
       chrome.storage.local.get(["tools"], function (result) {
@@ -440,6 +479,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                   document.getElementById("toolName").value = toolName;
                   document.getElementById("toolUrl").value = toolUrl;
+                  document.getElementById("toolCategories").value = (
+                    tool.categories || []
+                  ).join(", ");
                   document.getElementById("toolIcon").required = false;
                   modal.classList.add("show");
                 });
@@ -725,24 +767,29 @@ document.addEventListener("DOMContentLoaded", () => {
             const toolUrl = button.getAttribute("data-url");
             const toolIcon = button.querySelector("img").src;
 
-            // Show add modal with pre-filled data
-            const modal = document.getElementById("addToolModal");
-            const modalTitle = modal.querySelector("h2");
-            const submitBtn = modal.querySelector(".submit-btn");
+            // Load the tool data to get categories
+            chrome.storage.local.get(["tools"], function (result) {
+              const tools = result.tools || [];
+              const tool = tools.find((t) => t.name === toolName);
 
-            // Set modal to edit mode
-            modal.dataset.mode = "edit";
-            modal.dataset.originalName = toolName;
-            modal.dataset.currentIcon = toolIcon; // Store current icon
-            modalTitle.textContent = "Edit Tool";
-            submitBtn.textContent = "Save Changes";
+              const modal = document.getElementById("addToolModal");
+              const modalTitle = modal.querySelector("h2");
+              const submitBtn = modal.querySelector(".submit-btn");
 
-            // Pre-fill form
-            document.getElementById("toolName").value = toolName;
-            document.getElementById("toolUrl").value = toolUrl;
-            // Make icon field optional
-            document.getElementById("toolIcon").required = false;
-            modal.classList.add("show");
+              modal.dataset.mode = "edit";
+              modal.dataset.originalName = toolName;
+              modal.dataset.currentIcon = toolIcon;
+              modalTitle.textContent = "Edit Tool";
+              submitBtn.textContent = "Save Changes";
+
+              document.getElementById("toolName").value = toolName;
+              document.getElementById("toolUrl").value = toolUrl;
+              document.getElementById("toolCategories").value = (
+                tool?.categories || []
+              ).join(", ");
+              document.getElementById("toolIcon").required = false;
+              modal.classList.add("show");
+            });
           });
 
           // Existing delete button click handler

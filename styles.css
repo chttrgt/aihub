@@ -60,6 +60,26 @@ body {
   color: rgba(255, 255, 255, 0.5);
 }
 
+/* Style for category tags in search */
+.inputDiv input[type="text"] {
+  position: relative;
+}
+
+/* Highlight @mentions in the search input */
+.inputDiv input[type="text"]::selection {
+  background: rgba(41, 121, 255, 0.3);
+}
+
+/* Category input specific styles */
+#toolCategories {
+  font-family: monospace;
+  letter-spacing: 0.5px;
+}
+
+#toolCategories::placeholder {
+  opacity: 0.5;
+}
+
 .inputDiv input:focus {
   outline: none;
   box-shadow: 0 0 15px rgba(66, 135, 245, 0.5);
@@ -1128,4 +1148,40 @@ body {
 
 .close-about:hover {
   opacity: 1;
+}
+
+/* Category Search Styling */
+.inputDiv input.category-mode {
+  background: linear-gradient(145deg, rgba(41, 121, 255, 0.2), rgba(21, 101, 192, 0.2));
+  box-shadow: 0 0 15px rgba(41, 121, 255, 0.3);
+  border: 1px solid rgba(41, 121, 255, 0.3);
+  animation: categoryPulse 2s infinite;
+}
+
+@keyframes categoryPulse {
+  0% {
+    background: linear-gradient(145deg, rgba(41, 121, 255, 0.2), rgba(21, 101, 192, 0.2));
+    box-shadow: 0 0 15px rgba(41, 121, 255, 0.3);
+  }
+  50% {
+    background: linear-gradient(145deg, rgba(41, 121, 255, 0.3), rgba(21, 101, 192, 0.3));
+    box-shadow: 0 0 20px rgba(41, 121, 255, 0.4);
+  }
+  100% {
+    background: linear-gradient(145deg, rgba(41, 121, 255, 0.2), rgba(21, 101, 192, 0.2));
+    box-shadow: 0 0 15px rgba(41, 121, 255, 0.3);
+  }
+}
+
+/* Style for the @ symbol and category text */
+.inputDiv input.category-mode::placeholder {
+  color: rgba(41, 121, 255, 0.6);
+  transition: color 0.3s ease;
+}
+
+/* Highlight the actual category text */
+.category-highlight {
+  color: #2979ff;
+  font-weight: 500;
+  text-shadow: 0 0 10px rgba(41, 121, 255, 0.3);
 }
