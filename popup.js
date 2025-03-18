@@ -189,19 +189,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function updateToolsOrder() {
+  async function updateToolsOrder() {
     const toolButtons = document.querySelectorAll(".tool-button");
-    const newOrder = [];
 
-    toolButtons.forEach((button) => {
-      newOrder.push({
-        name: button.textContent.trim(),
+    // Get current tools from storage first
+    const result = await chrome.storage.local.get(["tools"]);
+    const currentTools = result.tools || [];
+
+    const newOrder = Array.from(toolButtons).map((button) => {
+      const name = button.textContent.trim();
+      const existingTool = currentTools.find((t) => t.name === name);
+
+      return {
+        name: name,
         url: button.getAttribute("data-url"),
         icon: button.querySelector("img").src,
-      });
+        categories: existingTool?.categories || [], // Preserve categories from existing tool
+      };
     });
 
-    saveTools(newOrder);
+    await saveTools(newOrder);
   }
 
   // Handle button clicks
@@ -262,21 +269,19 @@ document.addEventListener("DOMContentLoaded", () => {
         let shouldShow = true;
 
         // Check category filters if present
-        if (categoryFilter && toolData) {
+        if (categoryFilter) {
           shouldShow = categoryFilter.some((cat) => {
             const category = cat.substring(1); // Remove @ symbol
-            return (
-              toolData.categories && toolData.categories.includes(category)
-            );
+            return toolData?.categories?.includes(category);
           });
         }
 
         // If passing category filter, also check text query
         if (shouldShow && textQuery) {
-          shouldShow = buttonText.includes(textQuery);
+          shouldShow = buttonText.includes(textQuery.toLowerCase());
         }
 
-        // Remove the setTimeout and simplify the visibility logic
+        // Update visibility immediately
         if (shouldShow) {
           button.style.display = "flex";
           button.style.opacity = "1";
@@ -292,6 +297,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const visibleButtons = Array.from(currentToolButtons).filter(
         (button) => button.style.display !== "none"
       );
+
+      // Update list count to show number of visible items
+      updateListCount(visibleButtons.length);
 
       if (visibleButtons.length === 0 && searchQuery) {
         // Only show "No Tools Found" when there's a search query and no matches
@@ -334,6 +342,9 @@ document.addEventListener("DOMContentLoaded", () => {
     searchInput.placeholder = "Search for tools";
 
     const currentToolButtons = document.querySelectorAll(".tool-button");
+
+    // Reset list count to total number of tools
+    updateListCount(currentToolButtons.length);
 
     // If there are no tools at all
     if (currentToolButtons.length === 0) {
