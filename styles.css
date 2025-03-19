@@ -1279,3 +1279,91 @@ body {
     box-shadow: 0 0 15px rgba(41, 121, 255, 0.3);
   }
 }
+
+/*
+=====================
+  Import Button Styles
+=====================
+*/
+
+.import-button {
+  position: absolute;
+  bottom: 10px;
+  left: 70px; /* Adjusted to position next to the about button */
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #fbc02d; /* Updated to match SVG color */
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  z-index: 100;
+}
+
+.import-button svg {
+  width: 20px;
+  height: 20px;
+  stroke: #222;
+  stroke-width: 40px;
+}
+
+.import-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(251, 192, 45, 0.4); /* Adjusted hover shadow */
+}
+
+/* Add disabled state */
+.import-button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/*
+=====================
+  Export Button Styles
+=====================
+*/
+
+.export-button {
+  position: absolute;
+  bottom: 10px;
+  left: 120px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #4caf50;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  z-index: 100;
+}
+
+.export-button svg {
+  width: 20px;
+  height: 20px;
+  stroke: white;
+}
+
+.export-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+}
+
+.export-button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}

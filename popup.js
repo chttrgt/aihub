@@ -737,11 +737,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const toolButtons = document.querySelectorAll(".tool-button");
     const addButton = document.getElementById("addButton");
     const clearStorageBtn = document.getElementById("clearStorage");
-    const aboutButton = document.getElementById("aboutButton"); // Add this line
+    const aboutButton = document.getElementById("aboutButton");
+    const importButton = document.getElementById("importButton"); // Add this line
 
     addButton.classList.toggle("disabled", enabled);
     clearStorageBtn.classList.toggle("disabled", enabled);
-    aboutButton.classList.toggle("disabled", enabled); // Add this line
+    aboutButton.classList.toggle("disabled", enabled);
+    importButton.classList.toggle("disabled", enabled); // Add this line
 
     toolButtons.forEach((button) => {
       button.setAttribute("draggable", enabled);
@@ -865,6 +867,113 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && aboutModal.classList.contains("show")) {
       aboutModal.classList.remove("show");
+    }
+  });
+
+  // Import Tools Modal Functionality
+  const importButton = document.getElementById("importButton");
+  const importModal = document.getElementById("importModal");
+  const cancelImport = document.getElementById("cancelImport");
+  const importForm = document.getElementById("importForm");
+
+  importButton.addEventListener("click", () => {
+    importModal.classList.add("show");
+  });
+
+  cancelImport.addEventListener("click", () => {
+    importModal.classList.remove("show");
+    importForm.reset();
+  });
+
+  importForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fileInput = document.getElementById("importFile");
+    const file = fileInput.files[0];
+
+    if (!file) {
+      showAlert("Please select a JSON file.");
+      return;
+    }
+
+    try {
+      const fileContent = await file.text();
+      const tools = JSON.parse(fileContent);
+
+      if (!Array.isArray(tools)) {
+        throw new Error("Invalid JSON format. Expected an array of tools.");
+      }
+
+      const validTools = tools.map((tool) => {
+        if (!tool.name || !tool.url || !tool.icon) {
+          throw new Error("Each tool must have a name, url, and icon.");
+        }
+        return {
+          name: sanitizeInput(tool.name),
+          url: tool.url,
+          icon: tool.icon,
+          categories: tool.categories || [],
+        };
+      });
+
+      const existingTools = await loadTools();
+
+      // Filter out duplicates based on name AND url
+      const newTools = validTools.filter(
+        (newTool) =>
+          !existingTools.some(
+            (existingTool) =>
+              existingTool.name === newTool.name &&
+              existingTool.url === newTool.url
+          )
+      );
+
+      if (newTools.length === 0) {
+        showAlert("No new tools to import - all items already exist!");
+        importModal.classList.remove("show");
+        importForm.reset();
+        return;
+      }
+
+      const mergedTools = [...existingTools, ...newTools];
+
+      await saveTools(mergedTools);
+      newTools.forEach((tool) => createToolButton(tool));
+      updateListCount(mergedTools.length);
+      hideEmptyState();
+
+      showAlert(`${newTools.length} new tools imported successfully!`);
+      importModal.classList.remove("show");
+      importForm.reset();
+    } catch (error) {
+      showAlert(error.message);
+    }
+  });
+
+  // Add export functionality
+  const exportButton = document.getElementById("exportButton");
+  exportButton.addEventListener("click", async () => {
+    try {
+      const tools = await loadTools();
+      if (!tools || tools.length === 0) {
+        showAlert("No tools to export!");
+        return;
+      }
+
+      const jsonStr = JSON.stringify(tools, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ai-tools-backup.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showAlert("Tools exported successfully!");
+    } catch (error) {
+      showAlert("Failed to export tools: " + error.message);
     }
   });
 });
