@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AI HUB",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Access your favorite AI tools with just one click!",
   "icons": {
     "16": "assets/icons/icon16.png",
@@ -16,5 +16,5 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["tabs", "storage"]
+  "permissions": ["storage"]
 }
